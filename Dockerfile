@@ -28,13 +28,14 @@ RUN apt-get -yqq update && \
 
 WORKDIR /home/$USER
 USER $USER
-COPY sshd_config /home/$USER
+COPY sshd_config bash_aliases /home/$USER/
 
 # setup sshd
 RUN mkdir .sshd && \
     ssh-keygen -t rsa -f .sshd/ssh_host_rsa_key -N '' && \
     sed -e "s~\${home}~/home/$USER~" sshd_config > .sshd/sshd_config && \
-    rm sshd_config
+    rm sshd_config && \
+    mv bash_aliases .bash_aliases
 
 EXPOSE 2222
 CMD ["/usr/sbin/sshd", "-f", ".sshd/sshd_config", "-D"]
