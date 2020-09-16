@@ -1,4 +1,4 @@
-FROM debian:bullseye-slim
+FROM debian:buster-slim
 
 ARG USER=remote
 ARG PASS=remote
@@ -18,24 +18,26 @@ RUN apt-get -yqq update && \
     # setup python 3.7
     update-alternatives --install /usr/bin/python python /usr/bin/python3 1 && \
     update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1 && \
+    pip install --upgrade pip setuptools && \
     pip install \
-        yapf \
         flake8 \
+        virtualenv \
+        yapf \
     && \
     # create user
     useradd -m -s /bin/bash -G sudo $USER && \
     echo "$USER:$PASS" | chpasswd
 
-WORKDIR /home/$USER
-USER $USER
-COPY sshd_config bash_aliases /home/$USER/
+COPY start_sshd.sh /
 
-# setup sshd
+# setup home folder
+USER $USER
+WORKDIR /home/$USER
+COPY sshd_config bash_aliases /home/$USER/
 RUN mkdir .sshd && \
-    ssh-keygen -t rsa -f .sshd/ssh_host_rsa_key -N '' && \
     sed -e "s~\${home}~/home/$USER~" sshd_config > .sshd/sshd_config && \
     rm sshd_config && \
     mv bash_aliases .bash_aliases
 
 EXPOSE 2222
-CMD ["/usr/sbin/sshd", "-f", ".sshd/sshd_config", "-D"]
+CMD ["/start_sshd.sh"]
