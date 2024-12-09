@@ -2,6 +2,7 @@
 
 Debian image with some useful helpers for development.
 
+- Docker Hub: https://hub.docker.com/r/smrtl/debian-dev
 - The apt cache has not been cleared on purpose as the user might install some package.
 
 ## Kubernetes

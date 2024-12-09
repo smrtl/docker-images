@@ -2,7 +2,7 @@
 
 Debian image that starts an SSH daemon as a non root user.
 
-- It comes with some pre installed packages like `git` or `python`.
+- Docker Hub: https://hub.docker.com/r/smrtl/debian-sshd
 - The apt cache has not been cleared on purpose as the user might install some package.
 
 ## Kubernetes
@@ -33,8 +33,8 @@ ksshd() {
     k delete pod $name
   else
     echo "usage:"
-    echo "  kproxy create [name]"
-    echo "  kproxy delete [name]"
+    echo "  ksshd create [name]"
+    echo "  ksshd delete [name]"
   fi
 }
 ```
