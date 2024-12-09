@@ -1,5 +1,5 @@
 REPOSITORY=smrtl
-IMAGE_NAME=debian_sshd
+IMAGE_NAME=debian-sshd
 
 .PHONY: help
 help: ## this help message
@@ -7,20 +7,20 @@ help: ## this help message
 
 .PHONY: build
 build: ## build the docker image
-	docker build -t $(REPOSITORY)/$(IMAGE_NAME) .
+	@docker build -t $(REPOSITORY)/$(IMAGE_NAME) .
 
 .PHONY: run
 run: ## run bash in the docker image
-	docker run -ti $(REPOSITORY)/$(IMAGE_NAME) bash
+	@docker run -ti $(REPOSITORY)/$(IMAGE_NAME) bash
 
-.PHONY: run-root
-run-root: ## run bash as root in the docker image
-	docker run -uroot -ti $(REPOSITORY)/$(IMAGE_NAME) bash
+.PHONY: run/root
+run/root: ## run bash as root in the docker image
+	@docker run -uroot -ti $(REPOSITORY)/$(IMAGE_NAME) bash
 
 .PHONY: start
-start: ## starts the sshd server
-	docker run -ti -p 2222:2222 $(REPOSITORY)/$(IMAGE_NAME)
+start: ## start the sshd server
+	@docker run -ti -p 2222:2222 $(REPOSITORY)/$(IMAGE_NAME)
 
-.PHONY: publish
-publish: ## publishes the image to docker registry
-	docker push $(REPOSITORY)/$(IMAGE_NAME)
+.PHONY: push
+push: ## push the image to docker registry
+	@docker push $(REPOSITORY)/$(IMAGE_NAME)
